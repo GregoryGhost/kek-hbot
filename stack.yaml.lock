@@ -3,7 +3,21 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    cabal-file:
+      size: 1512
+      sha256: 4b808d1a6d37891871c64583eef34daf2d86ef73061b9db550ea473cab073f7c
+    name: core-hbot
+    version: 0.1.0.0
+    git: https://github.com/GregoryGhost/core-hbot.git
+    pantry-tree:
+      size: 556
+      sha256: f72feffdf53cbf11b02f93c47ac71e480babe7844746fa62d10e111762d92187
+    commit: d391980fe70f8acbab005b03261334da517e4ac1
+  original:
+    git: https://github.com/GregoryGhost/core-hbot.git
+    commit: d391980fe70f8acbab005b03261334da517e4ac1
 snapshots:
 - completed:
     size: 493124
