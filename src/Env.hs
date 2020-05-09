@@ -25,19 +25,21 @@ type App = ReaderT Env IO
 
 data Env = Env { 
     config :: Config
-}
+} deriving Show
 
 data Config = Config {
     logLvl :: LogLvl
     , fileLog :: !Text
 } deriving (Show, Generic)
 
+initEnv :: Config -> Env
+initEnv config = runReader init config
+    where init config = Env { config = config }
 
 load :: (MonadIO m) => m App
 load = do
     config <- (eitherDecode <$> getJSON) :: IO (Either String Config)
-    let env = Env { config = config }
-    app <- ask--TODO: ???
+    let app = initEnv config
     pure app
 
 instance FromJSON Config

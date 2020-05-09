@@ -1,10 +1,12 @@
 module Main where
 
-import Lib1
+import Env
 
 main :: IO ()
 main = do
-    env <- initEnv
-    pure $runBot env `catchError` handle
+    env <- Env.load
+    putStrLn env
+    pure $ runBot env `catchError` handle
     where
+        runBot env = undefined
         handle = undefined
