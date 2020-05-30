@@ -6,18 +6,18 @@
 packages:
 - completed:
     cabal-file:
-      size: 1512
-      sha256: 4b808d1a6d37891871c64583eef34daf2d86ef73061b9db550ea473cab073f7c
+      size: 2158
+      sha256: 8fbbd03f06b7c8f413b927d94203814a0045c4f8a2151616dacf625e20902b02
     name: core-hbot
     version: 0.1.0.0
     git: https://github.com/GregoryGhost/core-hbot.git
     pantry-tree:
-      size: 556
-      sha256: f72feffdf53cbf11b02f93c47ac71e480babe7844746fa62d10e111762d92187
-    commit: d391980fe70f8acbab005b03261334da517e4ac1
+      size: 754
+      sha256: d0ddb627bd6303a42caa5f348e3cf5c6524e12c5cbf76c46d45ad8461d911132
+    commit: c698cf783056597b040dd34d114c5d0e716279bd
   original:
     git: https://github.com/GregoryGhost/core-hbot.git
-    commit: d391980fe70f8acbab005b03261334da517e4ac1
+    commit: c698cf783056597b040dd34d114c5d0e716279bd
 snapshots:
 - completed:
     size: 493124

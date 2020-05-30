@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1e939cabcd505e3d6cc6d2c6061d79ce0dcb35b08584efd45e53e1345065d4b6
+-- hash: f32a6719745689ef5939c316edd9f989b13fc571143179cc957d925994d042bd
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -36,7 +36,9 @@ library
       aeson >=1.4.7.1
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
+    , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , filepath >=1.4.2.1
     , mtl <=2.2.2
     , text <=1.2.4.0
   default-language: Haskell2010
@@ -52,7 +54,9 @@ executable kek-hbot-exe
       aeson >=1.4.7.1
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
+    , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , filepath >=1.4.2.1
     , kek-hbot
     , mtl <=2.2.2
     , text <=1.2.4.0
@@ -70,7 +74,9 @@ test-suite kek-hbot-test
       aeson >=1.4.7.1
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
+    , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , filepath >=1.4.2.1
     , kek-hbot
     , mtl <=2.2.2
     , text <=1.2.4.0

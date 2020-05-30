@@ -19,6 +19,7 @@ import Control.Monad.Reader
 import Control.Monad.IO.Class
 import HBot.Core.Logger
 import System.Directory
+import System.FilePath
 
 
 type App = ReaderT Env IO
@@ -29,18 +30,30 @@ data Env = Env {
 
 data Config = Config {
     logLvl :: LogLvl
-    , fileLog :: !Text
+    , logFile :: !Text
 } deriving (Show, Generic)
 
-initEnv :: Config -> Env
-initEnv config = runReader init config
-    where init config = Env { config = config }
 
-load :: (MonadIO m) => m App
+initEnv :: Reader Config Env
+initEnv = do 
+    config <- ask
+    let env = Env { config = config }
+
+    pure env
+
+getEnv :: Config -> Env
+getEnv = runReader initEnv
+
+load :: MonadIO m => m Env
 load = do
-    config <- (eitherDecode <$> getJSON) :: IO (Either String Config)
-    let app = initEnv config
-    pure app
+    currentDir <- liftIO $ getCurrentDirectory
+    let fileName = "config.json"
+    let byPath = currentDir </> fileName
+    gotConfig <- liftIO $ ((eitherDecodeFileStrict byPath) :: IO (Either String Config))
+    let env = case gotConfig of Left e -> error e
+                                Right config -> getEnv config
+
+    pure env
 
 instance FromJSON Config
 instance ToJSON Config
@@ -48,8 +61,3 @@ instance ToJSON Config
 --TODO: move to core module
 instance FromJSON LogLvl
 instance ToJSON LogLvl
-
-getJSON :: IO B.ByteString
-getJSON = B.readFile byPath
-    where byPath = getCurrentDirectory ++ fileName
-          fileName = "config.json"

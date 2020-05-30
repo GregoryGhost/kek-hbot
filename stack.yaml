@@ -42,7 +42,7 @@ packages:
 # extra-deps: []
 extra-deps:
  - git: https://github.com/GregoryGhost/core-hbot.git
-   commit: d391980fe70f8acbab005b03261334da517e4ac1
+   commit: c698cf783056597b040dd34d114c5d0e716279bd
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
