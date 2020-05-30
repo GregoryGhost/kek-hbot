@@ -1,6 +1,13 @@
 module Main where
 
-import Lib
+import Env
+import Control.Monad.Except
 
 main :: IO ()
-main = someFunc
+main = do
+    env <- Env.load
+    print env
+    runBot env `catchError` handle
+    where
+        runBot env = putStrLn "TODO"
+        handle = undefined
