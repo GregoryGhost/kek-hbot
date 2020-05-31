@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f32a6719745689ef5939c316edd9f989b13fc571143179cc957d925994d042bd
+-- hash: d2bb7b3f2ab4af3d846ddcd8636508b6c3b78a3b494c43554daace11a4dbc342
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -38,6 +38,7 @@ library
     , bytestring <=0.10.10.0
     , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , exceptions >=0.10.4
     , filepath >=1.4.2.1
     , mtl <=2.2.2
     , text <=1.2.4.0
@@ -56,6 +57,7 @@ executable kek-hbot-exe
     , bytestring <=0.10.10.0
     , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , exceptions >=0.10.4
     , filepath >=1.4.2.1
     , kek-hbot
     , mtl <=2.2.2
@@ -76,6 +78,7 @@ test-suite kek-hbot-test
     , bytestring <=0.10.10.0
     , core-hbot >=0.1.0.0
     , directory <=1.3.6.0
+    , exceptions >=0.10.4
     , filepath >=1.4.2.1
     , kek-hbot
     , mtl <=2.2.2
