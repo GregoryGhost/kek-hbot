@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d2bb7b3f2ab4af3d846ddcd8636508b6c3b78a3b494c43554daace11a4dbc342
+-- hash: a590c67b9fc385b6938614230f8e8670a7d2ccd6d65e1699c1fbfd6cdd262583
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -68,6 +68,7 @@ test-suite kek-hbot-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      EchoSpec
       Paths_kek_hbot
   hs-source-dirs:
       test

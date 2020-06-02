@@ -1,3 +1,5 @@
+import EchoSpec
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = print Help
 
