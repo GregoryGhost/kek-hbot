@@ -6,7 +6,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module EchoSpec (check) where
+module TestSpec (check) where
 
 import HBot.Cmds.Echo
 import Test.QuickCheck
