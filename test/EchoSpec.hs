@@ -8,16 +8,28 @@
 
 module EchoSpec (check) where
 
-import HBot.Cmds.Echo
+import HBot.Cmds.Echo as Echo
+import HBot.Core.Cmd (Cmd(..), BotCmd(..))
 import Test.QuickCheck
 import Test.QuickCheck.All
 import Test.QuickCheck.Instances
+import Control.Monad.Catch
 
-double :: Integer -> Integer
-double n = 2 * n
+instance Arbitrary BotKekCmdStr where
+    arbitrary = genBotKekCmd
 
-prop_doubleEven :: Integer -> Bool
-prop_doubleEven n = even (double n)
+genBotKekCmd :: Gen BotKekCmdStr
+genBotKekCmd = do 
+      args <- getPrintableString <$> arbitrary
+
+      pure $ BotCmd Echo [args]
+
+prop_evalEcho :: BotKekCmdStr -> Bool
+prop_evalEcho cmd = case Echo.eval cmd of { 
+    Left a -> False;
+    Right a -> formatEcho == a; } where
+    formatEcho = "Entered text: " ++ (show $ args cmd)
+
 
 return []
 check = $(quickCheckAll)
