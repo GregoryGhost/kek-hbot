@@ -1,6 +1,6 @@
 module Main where
 
-import Env
+import HBot.Env as Env
 import Control.Monad.Except
 
 main :: IO ()

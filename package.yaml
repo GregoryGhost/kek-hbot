@@ -1,6 +1,6 @@
 name:                kek-hbot
 version:             0.1.0.0
-github:              "githubuser/kek-hbot"
+github:              "GregoryGhost/kek-hbot"
 license:             BSD3
 author:              "Gregory Kulakov"
 maintainer:          "lobster287@gmail.com"
@@ -29,6 +29,9 @@ dependencies:
 - directory <= 1.3.6.0
 - core-hbot >= 0.1.0.0
 - filepath >= 1.4.2.1
+- exceptions >= 0.10.4
+- quickcheck-instances <= 0.3.22
+- QuickCheck <= 2.13.2
 
 library:
   source-dirs: src
