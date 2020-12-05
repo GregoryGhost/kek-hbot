@@ -30,6 +30,7 @@ import Network.HTTP.Types.Status (statusCode)
 import Data.Aeson as Aeson
 import Data.Aeson.Types as AesonT
 import Data.Aeson.Casing
+import Data.Aeson.Encode.Pretty as Pretty
 import Data.Typeable
 import GHC.Generics
 
@@ -66,14 +67,18 @@ instance ToJSON GetMeResult where
   toJSON = genericToJSON defaultOptions { fieldLabelModifier = camelTo2 '_' }
 
 getStatusResponse :: L8.ByteString -> IO Bool
-getStatusResponse v = do
-  print v
+getStatusResponse sourceJson = do
+  putStrLn $ "Source JSON: " ++ (L8.unpack sourceJson)
   case decoded of
-    Just v -> pure $ ok v
+    Just v -> do
+      let prettyJson = L8.unpack $ Pretty.encodePretty v
+      putStrLn $ "Pretty JSON: " ++ prettyJson
+      pure $ ok v
     _ -> do
       print "cant decoded"
       pure False
-  where decoded = (decode v) :: Maybe GetMeResult
+  where 
+    decoded = (decode sourceJson) :: Maybe GetMeResult
 
 checkTelegramAuth :: String -> IO Bool
 checkTelegramAuth token = do
