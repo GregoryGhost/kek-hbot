@@ -1,4 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Main where
 
@@ -13,41 +16,72 @@ module Main where
 
 import Control.Concurrent.Async
 import Control.Monad.Except
-import Data.Aeson.Parser (json)
+import Data.Aeson.Parser
 import qualified Data.ByteString.Lazy.Char8 as L8
 import Data.Conduit (($$))
 import Data.Conduit.Attoparsec (sinkParser)
 import HBot.Env as Env
+import HBot.Env (telegramToken)
 import Network.HTTP.Client as HClient
 import Network.HTTP.Client.Conduit (bodyReaderSource)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
-import Network.HTTP.Simple
+import Network.HTTP.Simple as HttpS
 import Network.HTTP.Types.Status (statusCode)
-import HBot.Env (telegramToken)
+import Data.Aeson as Aeson
+import Data.Aeson.Types as AesonT
+import Data.Aeson.Casing
+import Data.Typeable
+import GHC.Generics
 
 
--- main :: IO ()
--- main = do
---     response <- httpLBS "http://httpbin.org/get"
+data User
+  = User
+      {
+        id :: Int
+        , isBot :: Bool
+        , firstName :: String
+        , username :: String
+        , canJoinGroups :: Bool
+        , canReadAllGroupMessages :: Bool
+        , supportsInlineQueries :: Bool
+      } deriving (Show, Generic)
 
---     putStrLn $ "The status code was: " ++
---                show (getResponseStatusCode response)
---     print $ getResponseHeader "Content-Type" response
---     L8.putStrLn $ getResponseBody response
+data ResultTelegram a
+  = ResultTelegram
+      {
+        ok :: Bool
+        , result :: a
+      } deriving (Show, Generic)
+
+type GetMeResult = ResultTelegram User
+
+instance FromJSON User where
+  parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = camelTo2 '_' }
+instance ToJSON User where
+  toJSON = genericToJSON defaultOptions { fieldLabelModifier = camelTo2 '_' }
+
+instance FromJSON GetMeResult where
+  parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = camelTo2 '_' }
+instance ToJSON GetMeResult where
+  toJSON = genericToJSON defaultOptions { fieldLabelModifier = camelTo2 '_' }
+
+getStatusResponse :: L8.ByteString -> IO Bool
+getStatusResponse v = do
+  print v
+  case decoded of
+    Just v -> pure $ ok v
+    _ -> do
+      print "cant decoded"
+      pure False
+  where decoded = (decode v) :: Maybe GetMeResult
 
 checkTelegramAuth :: String -> IO Bool
 checkTelegramAuth token = do
   manager <- newManager tlsManagerSettings
   request <- parseRequest formattedRequest
-  HClient.withResponse request manager $ \response -> do
-    putStrLn $
-      "The status code was: "
-        ++ show (statusCode $ responseStatus response)
-    value <-
-      bodyReaderSource (responseBody response)
-        $$ sinkParser json
-    print value
-  pure False
+  response <- HttpS.httpLbs request
+  getStatusResponse $ responseBody response
+
   where
     formattedRequest = "https://api.telegram.org/bot" ++ token ++ "/getMe"
 
@@ -58,3 +92,4 @@ main = do
   if isTelegramAuthed
     then print "Telegram auth OK"
     else print "Telegram auth FAILED"
+  

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ffc73bad03e4fe6853b597e3f3db6095181a3e01dc5d978a21c686cfcb305920
+-- hash: e4ee6aeb5838ba1bea0a7456f2846f06d6aec7c6a3b0cb69164d8f14f304839f
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -36,6 +36,7 @@ library
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
+    , aeson-casing >=0.2.0.0
     , async >=2.2.2
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
@@ -64,6 +65,7 @@ executable kek-hbot-exe
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
+    , aeson-casing >=0.2.0.0
     , async >=2.2.2
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
@@ -96,6 +98,7 @@ test-suite kek-hbot-test
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
+    , aeson-casing >=0.2.0.0
     , async >=2.2.2
     , base >=4.7 && <5
     , bytestring <=0.10.10.0
