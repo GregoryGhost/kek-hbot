@@ -43,6 +43,7 @@ packages:
 extra-deps:
  - git: https://github.com/GregoryGhost/core-hbot.git
    commit: c698cf783056597b040dd34d114c5d0e716279bd
+ - deriving-aeson-0.2.6
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

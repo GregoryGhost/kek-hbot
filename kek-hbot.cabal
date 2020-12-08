@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b90603b6006c9fc074e2041ecd436db4304fed0ff3037e89ebe1712bf4276cd6
+-- hash: aee5263fbed680dee1a1e4fe64b068746d0b87c2a556d9e1c0d22f06dd91c13b
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -29,10 +29,12 @@ library
   exposed-modules:
       HBot.Cmds.Echo
       HBot.Env
+      HBot.Messangers.Telegram.Types
   other-modules:
       Paths_kek_hbot
   hs-source-dirs:
       src
+  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
@@ -44,6 +46,7 @@ library
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
     , filepath >=1.4.2.1
@@ -51,9 +54,12 @@ library
     , http-client-tls >=0.3.5.3
     , http-conduit >=2.3.7.3
     , http-types >=0.12.3
+    , lens >=4.18.1
+    , lens-aeson >=1.1
     , mtl <=2.2.2
     , quickcheck-instances <=0.3.22
     , text <=1.2.4.0
+    , time >=1.9.3
   default-language: Haskell2010
 
 executable kek-hbot-exe
@@ -62,6 +68,7 @@ executable kek-hbot-exe
       Paths_kek_hbot
   hs-source-dirs:
       app
+  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2
@@ -74,6 +81,7 @@ executable kek-hbot-exe
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
     , filepath >=1.4.2.1
@@ -82,9 +90,12 @@ executable kek-hbot-exe
     , http-conduit >=2.3.7.3
     , http-types >=0.12.3
     , kek-hbot
+    , lens >=4.18.1
+    , lens-aeson >=1.1
     , mtl <=2.2.2
     , quickcheck-instances <=0.3.22
     , text <=1.2.4.0
+    , time >=1.9.3
   default-language: Haskell2010
 
 test-suite kek-hbot-test
@@ -96,6 +107,7 @@ test-suite kek-hbot-test
       Paths_kek_hbot
   hs-source-dirs:
       test
+  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2
@@ -108,6 +120,7 @@ test-suite kek-hbot-test
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
     , filepath >=1.4.2.1
@@ -116,7 +129,10 @@ test-suite kek-hbot-test
     , http-conduit >=2.3.7.3
     , http-types >=0.12.3
     , kek-hbot
+    , lens >=4.18.1
+    , lens-aeson >=1.1
     , mtl <=2.2.2
     , quickcheck-instances <=0.3.22
     , text <=1.2.4.0
+    , time >=1.9.3
   default-language: Haskell2010
