@@ -18,6 +18,7 @@ import Data.Aeson.Casing
 import Data.Aeson.Encode.Pretty as Pretty
 import Data.Aeson.Lens
 import Data.Aeson.Parser
+import Data.Aeson.TH
 import Data.Aeson.Types as AesonT
 import qualified Data.ByteString.Lazy.Char8 as L8
 import Data.Conduit (($$))
@@ -32,25 +33,27 @@ import Network.HTTP.Client.Conduit (bodyReaderSource)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Network.HTTP.Simple as HttpS
 import Network.HTTP.Types.Status (statusCode)
+import Control.Applicative
+
 
 type JsonSettings = CustomJSON '[OmitNothingFields, FieldLabelModifier (StripPrefix "_", CamelToSnake)]
 
 data User
   = User
-      { id :: Int,
-        isBot :: Bool,
-        firstName :: String,
-        username :: String,
-        canJoinGroups :: Bool,
-        canReadAllGroupMessages :: Bool,
-        supportsInlineQueries :: Bool
+      { _id :: Int,
+        _isBot :: Bool,
+        _firstName :: String,
+        _username :: String,
+        _canJoinGroups :: Bool,
+        _canReadAllGroupMessages :: Bool,
+        _supportsInlineQueries :: Bool
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Eq, Generic)
   deriving
     (FromJSON, ToJSON)
     via JsonSettings User
 
-makeLenses ''User
+makeFieldsNoPrefix ''User
 
 data ResultTelegram a
   = ResultTelegram
@@ -62,7 +65,7 @@ data ResultTelegram a
     (FromJSON, ToJSON)
     via JsonSettings (ResultTelegram a)
 
-makeLenses ''ResultTelegram
+makeFieldsNoPrefix ''ResultTelegram
 
 type GetMeResult = ResultTelegram User
 

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: aee5263fbed680dee1a1e4fe64b068746d0b87c2a556d9e1c0d22f06dd91c13b
+-- hash: 43e33d8d58e51ae8c50fa441afb702de95c6ec85a17015c6ca7ff3f389de182c
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -34,7 +34,7 @@ library
       Paths_kek_hbot
   hs-source-dirs:
       src
-  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
@@ -68,7 +68,7 @@ executable kek-hbot-exe
       Paths_kek_hbot
   hs-source-dirs:
       app
-  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2
@@ -107,7 +107,7 @@ test-suite kek-hbot-test
       Paths_kek_hbot
   hs-source-dirs:
       test
-  default-extensions: OverloadedStrings DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2
