@@ -1,7 +1,7 @@
 {
     "log": {
-        "logLvl": "Debug",
-        "logFile": "sample.log"
+        "log_lvl": "Debug",
+        "log_file": "sample.log"
     },
     "telegram": {
         "token": "TOKEN HERE"

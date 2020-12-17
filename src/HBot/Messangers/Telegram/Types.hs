@@ -22,7 +22,7 @@ data User
         _canReadAllGroupMessages :: Bool,
         _supportsInlineQueries :: Bool
       }
-  deriving stock (Show, Eq, Generic)
+  deriving stock (Show, Generic)
   deriving
     (FromJSON, ToJSON)
     via JsonSettings User

@@ -3,66 +3,98 @@ module HBot.Env
     Env (..),
     Config (..),
     load,
-    telegramToken
+    telegramToken,
   )
 where
 
 import Control.Applicative
+import Control.Lens
+import Control.Lens.TH
+import Control.Lens.TH
 import Control.Monad
 import Control.Monad.Catch
 import Control.Monad.IO.Class
 import Control.Monad.Reader
 import Data.Aeson
+import Data.Aeson.Casing
+import Data.Aeson.Lens
+import Data.Aeson.Parser
+import Data.Aeson.TH
+import Data.Aeson.Types as AesonT
 import qualified Data.ByteString.Lazy as B
-import Data.Text (unpack, Text)
+import Data.Text (Text, unpack)
 import Data.Typeable
+import Deriving.Aeson
 import GHC.Generics
 import HBot.Core.Logger
+import HBot.Settings
 import System.Directory
 import System.FilePath
 
-type App = ReaderT Env IO
+--TODO: move to core module
+instance FromJSON LogLvl
 
-data Env
-  = Env
-      { config :: Config
+instance ToJSON LogLvl
+
+data TelegramSettings
+  = TelegramSettings
+      { _token :: !Text
       }
-  deriving (Show)
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings TelegramSettings
+
+makeFieldsNoPrefix ''TelegramSettings
 
 data LogSettings
   = LogSettings
-      { logLvl :: LogLvl,
-        logFile :: !Text
+      { _logLvl :: LogLvl,
+        _logFile :: !Text
       }
-  deriving (Show, Generic)
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings LogSettings
+
+makeFieldsNoPrefix ''LogSettings
 
 data Config
   = Config
-      { log :: LogSettings,
-        telegram :: TelegramSettings
+      { _log :: LogSettings,
+        _telegram :: TelegramSettings
       }
-  deriving (Show, Generic)
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings Config
+
+makeFieldsNoPrefix ''Config
+
+data Env
+  = Env
+      { _config :: Config
+      }
+  deriving stock (Show, Generic)
+
+makeFieldsNoPrefix ''Env
+
+type App = ReaderT Env IO
 
 newtype DecodeError = DecodeError String deriving (Show)
 
 instance Exception DecodeError
 
-data TelegramSettings
-  = TelegramSettings
-      { token :: !Text
-      }
-  deriving (Show, Generic)
-
 telegramToken :: IO String
 telegramToken = do
   env <- load
-  let tgToken = unpack $ token $ telegram $ config env
+  let tgToken = unpack $ env ^. config ^. telegram ^. token
   pure tgToken
 
 initEnv :: Reader Config Env
 initEnv = do
   config <- ask
-  let env = Env {config = config}
+  let env = Env config
   pure env
 
 getEnv :: Config -> Env
@@ -80,20 +112,3 @@ load = do
 
 decodeError :: MonadThrow m => Either String a -> m a
 decodeError = either (throwM . DecodeError) pure
-
-instance FromJSON Config
-
-instance ToJSON Config
-
-instance FromJSON TelegramSettings
-
-instance ToJSON TelegramSettings
-
-instance FromJSON LogSettings
-
-instance ToJSON LogSettings
-
---TODO: move to core module
-instance FromJSON LogLvl
-
-instance ToJSON LogLvl
