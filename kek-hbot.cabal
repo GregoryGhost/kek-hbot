@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 43e33d8d58e51ae8c50fa441afb702de95c6ec85a17015c6ca7ff3f389de182c
+-- hash: e7372f54e25b7d39b58cccc7e163ab7a5decc57f4965cff447dc3ae6e66b0b96
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -29,7 +29,10 @@ library
   exposed-modules:
       HBot.Cmds.Echo
       HBot.Env
+      HBot.Messangers.Telegram.Api
+      HBot.Messangers.Telegram.Bot
       HBot.Messangers.Telegram.Types
+      HBot.Settings
   other-modules:
       Paths_kek_hbot
   hs-source-dirs:
