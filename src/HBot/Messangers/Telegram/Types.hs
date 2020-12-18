@@ -155,48 +155,241 @@ data Message = Message
     -- -- Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons
     -- ,replyMarkup :: Maybe InlineKeyboardMarkup
   }
-  deriving (Show, Generic)
+  deriving stock (Show, Generic)
   deriving
     (FromJSON, ToJSON)
     via JsonSettings Message
 
 makeFieldsNoPrefix ''Message
 
--- Presents an incoming update
--- data Update = Update
---     {
---        -- The update's unique identifier
---         _updateId :: Int
---         -- New incoming message of any kind — text, photo, sticker, etc
---         , _message :: Maybe Message
---         -- New version of a message that is known to the bot and was edited
---         , _editedMessage :: Maybe Message
---         -- New version of a message that is known to the bot and was edited
---         , _channelPost :: Maybe Message
---         -- New incoming channel post of any kind — text, photo, sticker, etc
---         , _editedChannelPost :: Maybe Message
---         -- -- New incoming inline query
---         -- , inlineQuery :: Maybe InlineQuery
---         -- -- The result of an inline query that was chosen by a user and sent to their chat partner.
---         -- -- Please see our documentation on the feedback collecting for details on how to enable these updates for your bot
---         -- , chosenInlineResult :: Maybe ChosenInlineResult
---         -- -- New incoming callback query
---         -- , callbackQuery :: Maybe CallbackQuery
---         -- -- New incoming shipping query. Only for invoices with flexible price
---         -- , shippingQuery :: Maybe ShippingQuery
---         -- -- New incoming pre-checkout query. Contains full information about checkout
---         -- , preCheckoutQuery :: Maybe PreCheckoutQuery
---         -- -- New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
---         -- , poll :: Maybe Poll
---         -- -- A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself
---         -- , pollAnswer :: Maybe PollAnswer
---     } deriving (Show, Generic)
---   deriving stock (Show, Generic)
---   deriving
---     (FromJSON, ToJSON)
---     via JsonSettings Update
+-- This object represents a point on the map
+data Location = Location
+  { -- Longitude as defined by sender
+    _longitude :: Double,
+    -- Latitude as defined by sender
+    _latitude :: Double
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings Location
 
--- makeFieldsNoPrefix ''Update
+makeFieldsNoPrefix ''Location
+
+-- This object represents an incoming inline query.
+-- When the user sends an empty query, your bot could return some default or trending results.
+data InlineQuery = InlineQuery
+  { -- Unique identifier for this query
+    _id :: String,
+    -- Sender
+    _from :: User,
+    -- Sender location, only for bots that request user location
+    _location :: Maybe Location,
+    -- Text of the query (up to 512 characters)
+    _query :: String,
+    -- Offset of the results to be returned, can be controlled by the bot
+    _offset :: String
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings InlineQuery
+
+makeFieldsNoPrefix ''InlineQuery
+
+-- Represents a result of an inline query that was chosen by the user and sent to their chat partner.
+data ChosenInlineResult = ChosenInlineResult
+  { -- The unique identifier for the result that was chosen
+    _resultId :: String,
+    -- The user that chose the result
+    _from :: User,
+    -- Sender location, only for bots that require user location
+    _location :: Maybe Location,
+    -- Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message.
+    -- Will be also received in callback queries and can be used to edit the message.
+    _inlineMessageId :: Maybe String,
+    -- The query that was used to obtain the result
+    _query :: String
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings ChosenInlineResult
+
+makeFieldsNoPrefix ''ChosenInlineResult
+
+-- This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present.  If the button was attached to a message sent via the bot (in inline mode), the field InlineMessageId will be present. Exactly one of the fields data or GameShortName will be present.
+data CallbackQuery = CallbackQuery
+  { -- Unique identifier for this query
+    _cbId :: String,
+    -- Sender
+    _cbFrom :: User,
+    -- Message with the callback button that originated the query.
+    -- Note that message content and message date will not be available if the message is too old
+    _cbMessage :: Maybe Message,
+    -- Identifier of the message sent via the bot in inline mode, that originated the query.
+    _cbInlineMessageId :: Maybe String,
+    -- Global identifier, uniquely corresponding to the chat to which the message
+    -- with the callback button was sent. Useful for high scores in games.
+    _cbChatInstance :: String,
+    -- Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
+    _cbData :: Maybe String,
+    -- Short name of a Game to be returned, serves as the unique identifier for the game
+    _cbGameShortName :: Maybe String
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via CallbackQueryJsonSettings CallbackQuery
+
+makeFieldsNoPrefix ''CallbackQuery
+
+-- This object represents a shipping address
+data ShippingAddress = ShippingAddress
+  { -- ISO 3166-1 alpha-2 country code
+    _countryCode :: String,
+    -- State, if applicable
+    _state :: String,
+    -- City
+    _city :: String,
+    -- First line for the address
+    _streetLine1 :: String,
+    -- Second line for the address
+    _streetLine2 :: String,
+    -- Address post code
+    _postCode :: String
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings ShippingAddress
+
+makeFieldsNoPrefix ''ShippingAddress
+
+-- This object contains information about an incoming shipping query.
+data ShippingQuery = ShippingQuery
+  { -- Unique query identifier
+    _id :: String,
+    -- User who sent the query
+    _from :: User,
+    -- Bot specified invoice payload
+    _invoicePayload :: String,
+    -- User specified shipping address
+    _shippingAddress :: ShippingAddress
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings ShippingQuery
+
+makeFieldsNoPrefix ''ShippingQuery
+
+-- This object represents information about an order.
+data OrderInfo = OrderInfo
+  { -- User name
+    _name :: Maybe String,
+    -- Optional. User's phone number
+    _phoneNumber :: Maybe String,
+    -- User email
+    _email :: Maybe String,
+    -- User shipping address
+    _shippingAddress :: Maybe ShippingAddress
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings OrderInfo
+
+makeFieldsNoPrefix ''OrderInfo
+
+-- This object contains information about an incoming pre-checkout query
+data PreCheckoutQuery = PreCheckoutQuery
+  { -- Unique query identifier
+    _id :: String,
+    -- User who sent the query
+    _from :: User,
+    -- Three-letter ISO 4217 currency code
+    _currency :: String,
+    -- Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+    _totalAmount :: Int,
+    -- Bot specified invoice payload
+    _invoicePayload :: String,
+    -- Identifier of the shipping option chosen by the user
+    _shippingOptionId :: Maybe String,
+    -- Order info provided by the user
+    _orderInfo :: Maybe OrderInfo
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings PreCheckoutQuery
+
+makeFieldsNoPrefix ''PreCheckoutQuery
+
+-- This object contains information about one answer option in a poll.
+data PollOption = PollOption
+  { -- Option text, 1-100 characters
+    _text :: String,
+    -- Number of users that voted for this option
+    _voterCount :: Int
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings PollOption
+
+makeFieldsNoPrefix ''PollOption
+
+-- This object contains information about a poll
+data Poll = Poll
+  { -- Unique poll identifier
+    _id :: String,
+    -- Poll question, 1-255 characters
+    _question :: String,
+    -- List of poll options
+    _options :: [PollOption],
+    -- True, if the poll is closed
+    _isClosed :: Bool
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings Poll
+
+makeFieldsNoPrefix ''Poll
+
+-- Presents an incoming update
+data Update = Update
+  { -- The update's unique identifier
+    _updateId :: Int,
+    -- New incoming message of any kind — text, photo, sticker, etc
+    _message :: Maybe Message,
+    -- New version of a message that is known to the bot and was edited
+    _editedMessage :: Maybe Message,
+    -- New version of a message that is known to the bot and was edited
+    _channelPost :: Maybe Message,
+    -- New incoming channel post of any kind — text, photo, sticker, etc
+    _editedChannelPost :: Maybe Message,
+    -- New incoming inline query
+    inlineQuery :: Maybe InlineQuery,
+    -- The result of an inline query that was chosen by a user and sent to their chat partner.
+    -- Please see our documentation on the feedback collecting for details on how to enable these updates for your bot
+    chosenInlineResult :: Maybe ChosenInlineResult,
+    -- New incoming callback query
+    callbackQuery :: Maybe CallbackQuery,
+    -- New incoming shipping query. Only for invoices with flexible price
+    shippingQuery :: Maybe ShippingQuery,
+    -- New incoming pre-checkout query. Contains full information about checkout
+    preCheckoutQuery :: Maybe PreCheckoutQuery,
+    -- New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
+    poll :: Maybe Poll
+  }
+  deriving stock (Show, Generic)
+  deriving
+    (FromJSON, ToJSON)
+    via JsonSettings Update
+
+makeFieldsNoPrefix ''Update
 
 data ChatType = Private | Group | SuperGroup | Channel | Unknown
   deriving stock (Show, Generic)
