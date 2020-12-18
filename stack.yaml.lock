@@ -22,6 +22,13 @@ packages:
       sha256: 5354f0be689a844f8305cb9b27b01f2e9aad9a9bcae767cab86a6be1a5a885a6
   original:
     hackage: deriving-aeson-0.2.6
+- completed:
+    hackage: datetime-0.3.1@sha256:7e275bd0ce7a2f66445bedfa0006abaf4d41af4c2204c3f8004c17eab5480e74,1534
+    pantry-tree:
+      size: 334
+      sha256: d41d182c143676464cb1774f0b7777e870ddeaf8b6cd5fee6ff0114997a1f504
+  original:
+    hackage: datetime-0.3.1
 snapshots:
 - completed:
     size: 493124

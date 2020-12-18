@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e7372f54e25b7d39b58cccc7e163ab7a5decc57f4965cff447dc3ae6e66b0b96
+-- hash: 42b8bd167d72dd218e0674a5d6b44d05301aba79711b85c0fee1e14f1234308f
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -49,6 +49,7 @@ library
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , datetime <=0.3.1
     , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
@@ -84,6 +85,7 @@ executable kek-hbot-exe
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , datetime <=0.3.1
     , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
@@ -123,6 +125,7 @@ test-suite kek-hbot-test
     , conduit >=1.3.2
     , conduit-extra >=1.3.5
     , core-hbot >=0.1.0.0
+    , datetime <=0.3.1
     , deriving-aeson >=0.2.6
     , directory <=1.3.6.0
     , exceptions >=0.10.4
