@@ -364,7 +364,7 @@ data Update = Update
     (FromJSON, ToJSON)
     via JsonSettings Update
 
-data ChatType = Private | Group | SuperGroup | Channel | Unknown
+data ChatType = Private | Group | Supergroup | Channel | Unknown
   deriving stock (Show, Generic)
   deriving
     (FromJSON, ToJSON)
