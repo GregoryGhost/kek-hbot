@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 42b8bd167d72dd218e0674a5d6b44d05301aba79711b85c0fee1e14f1234308f
+-- hash: f8120d22aacf2079b08bb3a928c8a16b8f5d49f375daae64e7117c428efe0490
 
 name:           kek-hbot
 version:        0.1.0.0
@@ -37,7 +37,7 @@ library
       Paths_kek_hbot
   hs-source-dirs:
       src
-  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances FlexibleContexts TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   build-depends:
       QuickCheck <=2.13.2
     , aeson >=1.4.7.1
@@ -72,7 +72,7 @@ executable kek-hbot-exe
       Paths_kek_hbot
   hs-source-dirs:
       app
-  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances FlexibleContexts TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2
@@ -112,7 +112,7 @@ test-suite kek-hbot-test
       Paths_kek_hbot
   hs-source-dirs:
       test
-  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances TemplateHaskell MultiParamTypeClasses FunctionalDependencies
+  default-extensions: OverloadedStrings OverloadedLabels DuplicateRecordFields DeriveGeneric DerivingVia DataKinds TypeSynonymInstances FlexibleInstances FlexibleContexts TemplateHaskell MultiParamTypeClasses FunctionalDependencies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck <=2.13.2

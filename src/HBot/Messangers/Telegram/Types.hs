@@ -1,5 +1,6 @@
 module HBot.Messangers.Telegram.Types where
 
+import Control.Lens
 import Control.Lens.TH
 import Data.Aeson.Casing
 import Data.Aeson.Lens
@@ -37,8 +38,6 @@ data User = User
     (FromJSON, ToJSON)
     via JsonSettings User
 
-makeFieldsNoPrefix ''User
-
 data ResultTelegram a = ResultTelegram
   { _ok :: Bool,
     _result :: a
@@ -47,8 +46,6 @@ data ResultTelegram a = ResultTelegram
   deriving
     (FromJSON, ToJSON)
     via JsonSettings (ResultTelegram a)
-
-makeFieldsNoPrefix ''ResultTelegram
 
 type GetMeResult = ResultTelegram User
 
@@ -59,31 +56,31 @@ data Message = Message
     -- Sender, can be empty for messages sent to channels
     _from :: Maybe User,
     -- Date the message was sent in Unix time
-    _date :: DateTime
+    _date :: DateTime,
     -- Conversation the message belongs to
-    -- , _chat :: Chat
+    _chat :: Chat,
     -- -- For forwarded messages, sender of the original message
-    -- ,forwardFrom :: Maybe User
-    -- -- For messages forwarded from a channel, information about the original channel
-    -- ,forwardFromChat :: Maybe Chat
-    -- -- For forwarded channel posts, identifier of the original message in the channel
-    -- ,forwardFromMessageId :: Maybe Int
-    -- -- For messages forwarded from channels, signature of the post author if present
-    -- ,forwardSignature :: Maybe String
-    -- -- Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
-    -- ,forwardSenderName :: Maybe String
-    -- -- For forwarded messages, date the original message
-    -- ,forwardDate :: Maybe DateTime
-    -- -- For replies, the original message.
-    -- -- Note that the Message object in this field will not contain further
-    -- -- ReplyToMessage fields even if it itself is a reply.
-    -- ,replyToMessage :: Maybe Message
-    -- -- Date the message was last edited
-    -- ,editDate :: Maybe DateTime
-    -- -- Signature of the post author for messages in channels
-    -- ,authorSignature :: Maybe String
-    -- -- For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-    -- ,text :: Maybe String
+    _forwardFrom :: Maybe User,
+    -- For messages forwarded from a channel, information about the original channel
+    _forwardFromChat :: Maybe Chat,
+    -- For forwarded channel posts, identifier of the original message in the channel
+    _forwardFromMessageId :: Maybe Int,
+    -- For messages forwarded from channels, signature of the post author if present
+    _forwardSignature :: Maybe String,
+    -- Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
+    _forwardSenderName :: Maybe String,
+    -- For forwarded messages, date the original message
+    _forwardDate :: Maybe DateTime,
+    -- For replies, the original message.
+    -- Note that the Message object in this field will not contain further
+    -- ReplyToMessage fields even if it itself is a reply.
+    _replyToMessage :: Maybe Message,
+    -- Date the message was last edited
+    _editDate :: Maybe DateTime,
+    -- Signature of the post author for messages in channels
+    _authorSignature :: Maybe String,
+    -- For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+    _text :: Maybe String,
     -- -- For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     -- ,entities :: Maybe [MessageEntity]
     -- -- For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
@@ -106,50 +103,50 @@ data Message = Message
     -- ,voice:: Maybe Voice
     -- -- Message is a video note, information about the video message
     -- ,videoNote:: Maybe VideoNote
-    -- -- Caption for the document, photo or video, 0-200 characters
-    -- ,caption:: Maybe String
+    -- Caption for the document, photo or video, 0-200 characters
+    _caption :: Maybe String,
     -- -- Message is a shared contact, information about the contact
     -- ,contact:: Maybe Contact
-    -- -- Message is a shared location, information about the location
-    -- ,location:: Maybe Location
+    -- Message is a shared location, information about the location
+    _location :: Maybe Location,
     -- -- Message is a venue, information about the venue
     -- ,venue:: Maybe Venue
-    -- -- Message is a native poll, information about the poll
-    -- ,poll:: Maybe Poll
-    -- -- New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
-    -- ,newChatMembers:: Maybe [User]
-    -- -- A member was removed from the group, information about them (this member may be the bot itself)
-    -- ,leftChatMember:: Maybe User
-    -- -- A chat title was changed to this value
-    -- ,newChatTitle:: Maybe String
+    -- Message is a native poll, information about the poll
+    _poll :: Maybe Poll,
+    -- New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
+    _newChatMembers :: Maybe [User],
+    -- A member was removed from the group, information about them (this member may be the bot itself)
+    _leftChatMember :: Maybe User,
+    -- A chat title was changed to this value
+    _newChatTitle :: Maybe String,
     -- -- A chat photo was change to this value
     -- ,newChatPhoto:: Maybe [PhotoSize]
-    -- -- Service message:: the chat photo was deleted
-    -- ,deleteChatPhoto:: Maybe Bool
-    -- -- Service message:: the group has been created
-    -- ,groupChatCreated:: Maybe Bool
-    -- -- Service message:: the supergroup has been created. This field can‘t be received
-    -- -- in a message coming through updates, because bot can’t be a member of a supergroup
-    -- -- when it is created. It can only be found in ReplyToMessage if someone replies to a
-    -- -- very first message in a directly created supergroup.
-    -- ,supergroupChatCreated:: Maybe Bool
-    -- -- Service message: the channel has been created. This field can‘t be received
-    -- -- in a message coming through updates, because bot can’t be a member of a channel
-    -- -- when it is created. It can only be found in ReplyToMessage if someone replies
-    -- -- to a very first message in a channel.
-    -- ,channelChatCreated:: Maybe Bool
-    -- -- The group has been migrated to a supergroup with the specified identifier
-    -- ,migrateToChatId:: Maybe Int
-    -- -- The supergroup has been migrated from a group with the specified identifier
-    -- ,migrateFromChatId:: Maybe Int
-    -- -- Specified message was pinned. Note that the Message object in this field will not contain further ReplyToMessage fields even if it is itself a reply.
-    -- ,pinnedMessage:: Maybe Message
+    -- Service message:: the chat photo was deleted
+    _deleteChatPhoto :: Maybe Bool,
+    -- Service message:: the group has been created
+    _groupChatCreated :: Maybe Bool,
+    -- Service message:: the supergroup has been created. This field can‘t be received
+    -- in a message coming through updates, because bot can’t be a member of a supergroup
+    -- when it is created. It can only be found in ReplyToMessage if someone replies to a
+    -- very first message in a directly created supergroup.
+    _supergroupChatCreated :: Maybe Bool,
+    -- Service message: the channel has been created. This field can‘t be received
+    -- in a message coming through updates, because bot can’t be a member of a channel
+    -- when it is created. It can only be found in ReplyToMessage if someone replies
+    -- to a very first message in a channel.
+    _channelChatCreated :: Maybe Bool,
+    -- The group has been migrated to a supergroup with the specified identifier
+    _migrateToChatId :: Maybe Int,
+    -- The supergroup has been migrated from a group with the specified identifier
+    _migrateFromChatId :: Maybe Int,
+    -- Specified message was pinned. Note that the Message object in this field will not contain further ReplyToMessage fields even if it is itself a reply.
+    _pinnedMessage :: Maybe Message,
     -- -- Message is an invoice for a payment, information about the invoice
     -- ,invoice:: Maybe Invoice
     -- -- Message is a service message about a successful payment, information about the payment
     -- ,successfulPayment:: Maybe SuccessfulPayment
-    -- -- The domain name of the website on which the user has logged in.
-    -- ,connectedWebsite:: Maybe String
+    -- The domain name of the website on which the user has logged in.
+    _connectedWebsite :: Maybe String
     -- -- Telegram Passport data
     -- ,passportData :: Maybe PassportData
     -- -- Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons
@@ -159,8 +156,6 @@ data Message = Message
   deriving
     (FromJSON, ToJSON)
     via JsonSettings Message
-
-makeFieldsNoPrefix ''Message
 
 -- This object represents a point on the map
 data Location = Location
@@ -173,8 +168,6 @@ data Location = Location
   deriving
     (FromJSON, ToJSON)
     via JsonSettings Location
-
-makeFieldsNoPrefix ''Location
 
 -- This object represents an incoming inline query.
 -- When the user sends an empty query, your bot could return some default or trending results.
@@ -195,8 +188,6 @@ data InlineQuery = InlineQuery
     (FromJSON, ToJSON)
     via JsonSettings InlineQuery
 
-makeFieldsNoPrefix ''InlineQuery
-
 -- Represents a result of an inline query that was chosen by the user and sent to their chat partner.
 data ChosenInlineResult = ChosenInlineResult
   { -- The unique identifier for the result that was chosen
@@ -215,8 +206,6 @@ data ChosenInlineResult = ChosenInlineResult
   deriving
     (FromJSON, ToJSON)
     via JsonSettings ChosenInlineResult
-
-makeFieldsNoPrefix ''ChosenInlineResult
 
 -- This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present.  If the button was attached to a message sent via the bot (in inline mode), the field InlineMessageId will be present. Exactly one of the fields data or GameShortName will be present.
 data CallbackQuery = CallbackQuery
@@ -242,8 +231,6 @@ data CallbackQuery = CallbackQuery
     (FromJSON, ToJSON)
     via CallbackQueryJsonSettings CallbackQuery
 
-makeFieldsNoPrefix ''CallbackQuery
-
 -- This object represents a shipping address
 data ShippingAddress = ShippingAddress
   { -- ISO 3166-1 alpha-2 country code
@@ -264,8 +251,6 @@ data ShippingAddress = ShippingAddress
     (FromJSON, ToJSON)
     via JsonSettings ShippingAddress
 
-makeFieldsNoPrefix ''ShippingAddress
-
 -- This object contains information about an incoming shipping query.
 data ShippingQuery = ShippingQuery
   { -- Unique query identifier
@@ -282,8 +267,6 @@ data ShippingQuery = ShippingQuery
     (FromJSON, ToJSON)
     via JsonSettings ShippingQuery
 
-makeFieldsNoPrefix ''ShippingQuery
-
 -- This object represents information about an order.
 data OrderInfo = OrderInfo
   { -- User name
@@ -299,8 +282,6 @@ data OrderInfo = OrderInfo
   deriving
     (FromJSON, ToJSON)
     via JsonSettings OrderInfo
-
-makeFieldsNoPrefix ''OrderInfo
 
 -- This object contains information about an incoming pre-checkout query
 data PreCheckoutQuery = PreCheckoutQuery
@@ -324,8 +305,6 @@ data PreCheckoutQuery = PreCheckoutQuery
     (FromJSON, ToJSON)
     via JsonSettings PreCheckoutQuery
 
-makeFieldsNoPrefix ''PreCheckoutQuery
-
 -- This object contains information about one answer option in a poll.
 data PollOption = PollOption
   { -- Option text, 1-100 characters
@@ -337,8 +316,6 @@ data PollOption = PollOption
   deriving
     (FromJSON, ToJSON)
     via JsonSettings PollOption
-
-makeFieldsNoPrefix ''PollOption
 
 -- This object contains information about a poll
 data Poll = Poll
@@ -356,8 +333,6 @@ data Poll = Poll
     (FromJSON, ToJSON)
     via JsonSettings Poll
 
-makeFieldsNoPrefix ''Poll
-
 -- Presents an incoming update
 data Update = Update
   { -- The update's unique identifier
@@ -371,33 +346,29 @@ data Update = Update
     -- New incoming channel post of any kind — text, photo, sticker, etc
     _editedChannelPost :: Maybe Message,
     -- New incoming inline query
-    inlineQuery :: Maybe InlineQuery,
+    _inlineQuery :: Maybe InlineQuery,
     -- The result of an inline query that was chosen by a user and sent to their chat partner.
     -- Please see our documentation on the feedback collecting for details on how to enable these updates for your bot
-    chosenInlineResult :: Maybe ChosenInlineResult,
+    _chosenInlineResult :: Maybe ChosenInlineResult,
     -- New incoming callback query
-    callbackQuery :: Maybe CallbackQuery,
+    _callbackQuery :: Maybe CallbackQuery,
     -- New incoming shipping query. Only for invoices with flexible price
-    shippingQuery :: Maybe ShippingQuery,
+    _shippingQuery :: Maybe ShippingQuery,
     -- New incoming pre-checkout query. Contains full information about checkout
-    preCheckoutQuery :: Maybe PreCheckoutQuery,
+    _preCheckoutQuery :: Maybe PreCheckoutQuery,
     -- New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-    poll :: Maybe Poll
+    _poll :: Maybe Poll
   }
   deriving stock (Show, Generic)
   deriving
     (FromJSON, ToJSON)
     via JsonSettings Update
 
-makeFieldsNoPrefix ''Update
-
 data ChatType = Private | Group | SuperGroup | Channel | Unknown
   deriving stock (Show, Generic)
   deriving
     (FromJSON, ToJSON)
     via JsonSettings ChatType
-
-makeFieldsNoPrefix ''ChatType
 
 --- Describes actions that a non-administrator user is allowed to take in a chat.
 data ChatPermissions = ChatPermissions
@@ -423,8 +394,6 @@ data ChatPermissions = ChatPermissions
     (FromJSON, ToJSON)
     via JsonSettings ChatPermissions
 
-makeFieldsNoPrefix ''ChatPermissions
-
 -- This object represents a chat photo
 data ChatPhoto = ChatPhoto
   { -- Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
@@ -436,8 +405,6 @@ data ChatPhoto = ChatPhoto
   deriving
     (FromJSON, ToJSON)
     via JsonSettings ChatPhoto
-
-makeFieldsNoPrefix ''ChatPhoto
 
 -- Represents a chat.
 data Chat = Chat
@@ -475,4 +442,21 @@ data Chat = Chat
     (FromJSON, ToJSON)
     via ChatJsonSettings Chat
 
+makeFieldsNoPrefix ''User
+makeFieldsNoPrefix ''ResultTelegram
+makeFieldsNoPrefix ''Message
+makeFieldsNoPrefix ''Location
+makeFieldsNoPrefix ''InlineQuery
+makeFieldsNoPrefix ''ChosenInlineResult
+makeFieldsNoPrefix ''CallbackQuery
+makeFieldsNoPrefix ''ShippingAddress
+makeFieldsNoPrefix ''ShippingQuery
+makeFieldsNoPrefix ''OrderInfo
+makeFieldsNoPrefix ''PreCheckoutQuery
+makeFieldsNoPrefix ''PollOption
+makeFieldsNoPrefix ''Poll
+makeFieldsNoPrefix ''Update
 makeFieldsNoPrefix ''Chat
+makeFieldsNoPrefix ''ChatType
+makeFieldsNoPrefix ''ChatPermissions
+makeFieldsNoPrefix ''ChatPhoto

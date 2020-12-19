@@ -27,6 +27,7 @@ default-extensions: OverloadedStrings
                     DataKinds
                     TypeSynonymInstances
                     FlexibleInstances
+                    FlexibleContexts
                     TemplateHaskell
                     MultiParamTypeClasses
                     FunctionalDependencies
